@@ -1,0 +1,61 @@
+﻿@model EmployeePageViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section class="mb-4">
+    <form asp-controller="Home" asp-action="Index" method="post" enctype="multipart/form-data">
+
+        @if (ViewData["Error"] != null)
+        {
+            <div class="alert alert-primary">
+                @ViewData["Error"]
+            </div>
+        }
+
+        <input type="file" name="file" />
+        <input type="submit" value="Import" />
+    </form>
+</section>
+
+@if (Model.EmployeePairs != null)
+{
+    <section class="mb-4">
+        <p>The pair of employees who have worked together on common projects for the longest period of time:</p>
+        <p>Employee ID #1 - @Model.EmployeePairLongestPeriod.EmpID1</p>
+        <p>Employee ID #2 - @Model.EmployeePairLongestPeriod.EmpID2</p>
+        <p>DaysWorked - @Model.EmployeePairLongestPeriod.DaysWorked</p>
+    </section>
+}
+
+@if (Model.EmployeePairs?.Any() == true)
+{
+    <section class="mb-4">
+        <h2>Employee pairs</h2>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Employee ID #1</th>
+                    <th scope="col">Employee ID #2</th>
+                    <th scope="col">Project ID</th>
+                    <th scope="col">Days worked</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var employeePair in Model.EmployeePairs)
+                {
+                    <tr>
+                        <td>@employeePair.EmpID1</td>
+                        <td>@employeePair.EmpID2</td>
+                        <td>@employeePair.ProjectID</td>
+                        <td>@employeePair.DaysWorked</td>
+                    </tr>
+                }
+            
+            </tbody>
+        </table>
+    </section>
+}
